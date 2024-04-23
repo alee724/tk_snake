@@ -25,9 +25,16 @@ def game():
     board = Board(main_frame, points, 1, 2)
     board.grid(column=0, row=0, sticky="nsew")
 
+    def keypressed(event): 
+        k = event.char
+        if k == "r" or k == "R": 
+            board.new_game()
+            root.unbind("<Key>")
+
     # Binding directional keys 
     root.bind("<Left>", lambda e: board.dir_change(-1))
     root.bind("<Right>", lambda e: board.dir_change(1))
+    root.bind("<<GameEnd>>", lambda e: root.bind("<Key>", keypressed))
     
     root.mainloop()
 

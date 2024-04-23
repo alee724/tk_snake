@@ -9,16 +9,12 @@ class Snake():
 
     def collision(self):
         # check collision of the head of the snake 
-        x, y = self.body[0]
-        if x < 0 or x > self.size-1: return True 
-        if y < 0 or y > self.size-1: return True 
         if self.body.count(self.body[0]) > 1: return True 
         return False
 
 class Board(Canvas): 
     def __init__(self, parent, point_var, size = 1, spd = 1): 
         Canvas.__init__(self, parent, highlightthickness=0,bg="black")
-        self.game = True 
         self.parent = parent
         self.points = point_var
 
@@ -27,6 +23,12 @@ class Board(Canvas):
         self.grids = 500//self.size 
         self.spd = spd*100 # in milliseconds 
 
+        self.new_game()
+
+    def new_game(self): 
+        self.game = True 
+        self.points.set(0)
+
         # directions
         self.dir = 0
 
@@ -34,6 +36,8 @@ class Board(Canvas):
         self.snake = Snake(self.grids)
 
         # make the initial "food"
+        try: self.delete("food")
+        except: pass
         self.food = [0, 0]
         self.gen_food()
 
@@ -60,7 +64,7 @@ class Board(Canvas):
         elif self.dir == 3:
             dx = -1
         hx, hy = self.snake.body[0]
-        new_head = [hx+dx, hy+dy]
+        new_head = [(hx+dx)%self.grids, (hy+dy)%self.grids]
         self.snake.body = self.snake.body[:-1]
         self.snake.body.insert(0, new_head)
 
@@ -79,7 +83,8 @@ class Board(Canvas):
         self.move_snake()
         self.food_collision(tail)
         # redraw the snake
-        self.delete("snake")
+        try: self.delete("snake") 
+        except: pass 
         for coord in self.snake.body:
             x,y = coord
             self.create_rectangle(x*self.size, y*self.size, 
