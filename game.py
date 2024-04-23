@@ -1,5 +1,5 @@
 from tkinter import * 
-import random 
+import random
 
 class Snake():
     def __init__(self, grids):
@@ -50,8 +50,8 @@ class Board(Canvas):
                               (fx+1)*self.size, (fy+1)*self.size, fill="#FFFF00", tags="food")      
 
     def dir_change(self, val):
-        self.dir += val 
-        self.dir = self.dir % 4
+        if abs(val-self.dir) != 2: 
+            self.dir = val 
 
     def move_snake(self):
         dx, dy = 0, 0

@@ -32,8 +32,10 @@ def game():
             root.unbind("<Key>")
 
     # Binding directional keys 
-    root.bind("<Left>", lambda e: board.dir_change(-1))
+    root.bind("<Up>", lambda e: board.dir_change(0))
     root.bind("<Right>", lambda e: board.dir_change(1))
+    root.bind("<Down>", lambda e: board.dir_change(2))
+    root.bind("<Left>", lambda e: board.dir_change(3))
     root.bind("<<GameEnd>>", lambda e: root.bind("<Key>", keypressed))
     
     root.mainloop()
